@@ -3,7 +3,8 @@ pocket dummy oauth to demonstrate token stealing poc with other app's token
 
 inspired from https://salt.security/blog/oh-auth-abusing-oauth-to-take-over-millions-of-accounts
 
-![imagexx](https://github.com/kisanakkkkk/pocket_dummy_oauth/assets/70153248/8e362574-1e7b-48b7-a3e9-0ee1f1d8e64d)
+![imagexx](https://github.com/kisanakkkkk/pocket_dummy_oauth/assets/70153248/3e59604f-51c2-4f93-a678-58fc9a5dc11f)
+
 
 ```
 ==setup==
