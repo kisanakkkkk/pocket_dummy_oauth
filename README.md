@@ -28,4 +28,4 @@ inspired from https://salt.security/blog/oh-auth-abusing-oauth-to-take-over-mill
 3. see access code and access token after redirected to profile.php 
 ```
 
-
+check your access token here: https://developers.facebook.com/tools/debug/accesstoken/
