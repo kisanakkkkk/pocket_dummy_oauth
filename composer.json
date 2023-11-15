@@ -1,0 +1,17 @@
+{
+    "name": "kisanak/oauth_dummy_hehe",
+    "autoload": {
+        "psr-4": {
+            "Kisanak\\OauthDummyHehe\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "kisanakkkkk",
+            "email": "crisdeosiahaan@gmail.com"
+        }
+    ],
+    "require": {
+	   "facebook/graph-sdk" : "~5.0"
+	}
+}
