@@ -48,7 +48,7 @@ $permissions = ['email']; // optional
 			$fb->setDefaultAccessToken($_SESSION['facebook_access_token']);
 		}
 		if (isset($_GET['code'])) {
-			$_SESSION['access_token'] =$_GET['facebook_access_token'];
+			$_SESSION['access_token'] =$_SESSION['facebook_access_token'];
 			$_SESSION['access_code'] =$_GET['code'];
 			header('Location: profile.php');
 
