@@ -53,7 +53,7 @@ function github_oauth_process(){
 
 	$github = array(
 		'client_id' => $config['github_client_id'],
-		'redirect_uri' => 'http://localhost:8000/github-callback.php',
+		'redirect_uri' => $config['github_redirect_uri'],
 		'scope' => 'user'
 	);
 	header('Location: ' . $authorizeURL . '?' . http_build_query($github));
