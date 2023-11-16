@@ -32,7 +32,7 @@ inspired from https://salt.security/blog/oh-auth-abusing-oauth-to-take-over-mill
 
 ==deployment==
 1. php -S 0.0.0.0:8000, go to http://localhost:8000/ on browser
-2. log in with same facebook account used as developer account
+2. log in with same account used as developer account
 3. see access code and access token after redirected to profile.php 
 ```
 
