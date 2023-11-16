@@ -6,99 +6,109 @@
 require 'vendor/autoload.php';
 session_start();
 
-$configFile = 'config.conf';
-$configContent = file_get_contents($configFile);
-
-// Decode the JSON content into an associative array
-$config = json_decode($configContent, true);
-
-$fb = new Facebook\Facebook([
- 'app_id' => $config['app_id'],
- 'app_secret' => $config['app_secret'],
- 'default_graph_version' => 'v2.5',
-]);
-
-$helper = $fb->getRedirectLoginHelper();
-$permissions = ['email']; // optional
-try {
-	if (isset($_SESSION['facebook_access_token'])) {
-		$accessToken = $_SESSION['facebook_access_token'];
-	} else {
-  		$accessToken = $helper->getAccessToken();
-	}
-} catch(Facebook\Exceptions\facebookResponseException $e) {
-	echo 'Graph returned an error: ' . $e->getMessage();
-  exit;
-} catch(Facebook\Exceptions\FacebookSDKException $e) {
 
 
-echo 'Facebook SDK returned an error: ' . $e->getMessage();
-  exit;
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['fb_oauth_click'])) {
+    // Call the function when the button is clicked
+    fb_oauth_process();
+}elseif($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['github_oauth_click'])){
+	github_oauth_process();
 }
 
-if (isset($accessToken)) {
-	if (isset($_SESSION['facebook_access_token'])) {
-		$fb->setDefaultAccessToken($_SESSION['facebook_access_token']);
-	} else {
-		$_SESSION['facebook_access_token'] = (string) $accessToken;
-		$oAuth2Client = $fb->getOAuth2Client();
-		$longLivedAccessToken = $oAuth2Client->getLongLivedAccessToken($_SESSION['facebook_access_token']);
-		$_SESSION['facebook_access_token'] = (string) $longLivedAccessToken;
-		$fb->setDefaultAccessToken($_SESSION['facebook_access_token']);
-	}
-	if (isset($_GET['code'])) {
-		$_SESSION['facebook_access_code'] =$_GET['code'];
-		header('Location: profile.php');
+function fb_oauth_process(){
+	$configFile = 'config.conf';
+	$configContent = file_get_contents($configFile);
 
-	}
+	// Decode the JSON content into an associative array
+	$config = json_decode($configContent, true);
 
-	try {
-		$profile_request = $fb->get('/me?fields=name,first_name,last_name,email');
-		$requestPicture = $fb->get('/me/picture?redirect=false&height=200'); //getting user picture
+	$fb = new Facebook\Facebook([
+	 'app_id' => $config['fb_app_id'],
+	 'app_secret' => $config['fb_app_secret'],
+	 'default_graph_version' => 'v2.5',
+	]);
 
-		$picture = $requestPicture->getGraphUser();
+	$helper = $fb->getRedirectLoginHelper();
+	$permissions = ['email']; // optional
 
-		$profile = $profile_request->getGraphUser();
-
-		$fbid = $profile->getProperty('id');           // To Get Facebook ID
-
-		$fbfullname = $profile->getProperty('name');   // To Get Facebook full name
-
-		$fbemail = $profile->getProperty('email');    //  To Get Facebook email
-
-		$fbpic = "<img src='".$picture['url']."' class='img-rounded'/>";
-# save the user nformation in session variable
-		$_SESSION['fb_id'] = $fbid.'</br>';
-		$_SESSION['fb_name'] = $fbfullname.'</br>';
-
-		$_SESSION['fb_email'] = $fbemail.'</br>';
-
-		$_SESSION['fb_pic'] = $fbpic.'</br>';
-
-	} catch(Facebook\Exceptions\FacebookResponseException $e) {
-		echo 'Graph returned an error: ' . $e->getMessage();
-
-		session_destroy();
-
-		header("Location: ./");
-
-		exit;
-
-} catch(Facebook\Exceptions\FacebookSDKException $e) {
-
-// When validation fails or other local issues
-echo 'Facebook SDK returned an error: ' . $e->getMessage();
-exit;
+	$loginUrl = $helper->getLoginUrl($config['fb_redirect_uri'], $permissions);
+	header("Location: $loginUrl");
+	
 }
 
-} else {
+function github_oauth_process(){
+	$configFile = 'config.conf';
+	$configContent = file_get_contents($configFile);
 
-// replace your website URL same as added in the developers.Facebook.com/apps e.g. if you used http instead of https and you used            
+	// Decode the JSON content into an associative array
+	$config = json_decode($configContent, true);
 
-$loginUrl = $helper->getLoginUrl('http://localhost:8000/', $permissions);
-echo '<a href="' . $loginUrl . '">Log in with Facebook!</a>';
+	# URL of github api
+	$authorizeURL = 'https://github.com/login/oauth/authorize';
+	$tokenURL = 'https://github.com/login/oauth/access_token';
+	$apiURLBase = 'https://api.github.com/';
+
+
+
+	$github = array(
+		'client_id' => $config['github_client_id'],
+		'redirect_uri' => 'http://localhost:8000/github-callback.php',
+		'scope' => 'user'
+	);
+	header('Location: ' . $authorizeURL . '?' . http_build_query($github));
 
 }
 
+if (!isset($_SESSION['logged_in'])) {
+	?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SSO Login</title>
+</head>
+<body>
+    <h1>SSO Login</h1>
+
+    <!-- GitHub Login Form -->
+    <form method="post">
+        <input type="hidden" name="github_oauth_click" value="github_oauth_click">
+        <button type="submit" style="background-color: #24292e; color: #ffffff; padding: 10px; border: none; cursor: pointer;">
+            Login with GitHub
+        </button>
+    </form>
+
+    <br><br>
+
+    <!-- Facebook Login Form -->
+    <form method="post">
+        <input type="hidden" name="fb_oauth_click" value="fb_oauth_click">
+        <button type="submit" style="background-color: #1877f2; color: #ffffff; padding: 10px; border: none; cursor: pointer;" value="fb_oauth_click">
+            Login with Facebook
+        </button>
+    </form>
+
+    <br><br>
+
+    <!-- Google Login Form -->
+    <form method="post">
+        <input type="hidden" name="google_oauth_click" value="google_oauth_click">
+        <button type="submit" style="background-color: #4285f4; color: #ffffff; padding: 10px; border: none; cursor: pointer;">
+            Login with Google
+        </button>
+    </form>
+
+    <!-- Add forms for other providers as needed -->
+
+</body>
+</html>
+
+<?php
+}
+else{
+	echo "minimal logout dulu lah";
+}
 ?>
 

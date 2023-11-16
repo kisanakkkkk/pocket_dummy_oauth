@@ -8,11 +8,12 @@ inspired from https://salt.security/blog/oh-auth-abusing-oauth-to-take-over-mill
 
 ```
 ==setup==
-1. install composer
-2. `sudo apt-get install php-mbstring`
-3. composer init
-4. add `"facebook/graph-sdk" : "~5.0"` on "require{}"
-5. composer install
+1. sudo apt-get install php-curl
+2. install composer
+3. `sudo apt-get install php-mbstring`
+4. composer init
+5. add `"facebook/graph-sdk" : "~5.0"` on "require{}"
+6. composer install
 
 ==app id & app secret==
 1. create a facebook developer account (https://developers.facebook.com/docs/development/register/)

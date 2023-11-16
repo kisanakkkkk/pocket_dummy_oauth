@@ -19,7 +19,7 @@ if (isset($_POST['logout'])) {
 
 <head>
 
-     <title>Login with Facebook</title>
+     <title>Login with </title>
 
      <link
 
@@ -35,13 +35,13 @@ if (isset($_POST['logout'])) {
 
   <body>     
 
-  <?php if($_SESSION['fb_id']) {?>
+  <?php if($_SESSION['id']) {?>
 
         <div class = "container">
 
            <div class = "jumbotron">
 
-              <h1>Hello <?php echo $_SESSION['fb_name']; ?></h1>
+              <h1>Hello <?php echo $_SESSION['name']; ?></h1>
 
               <p>Welcome to awikwok</p>
                   <form method="post" action="">
@@ -52,25 +52,25 @@ if (isset($_POST['logout'])) {
 
               <ul class = "nav nav-list">
 
-                 <h4>Facebook ID</h4>
+                 <h4> ID</h4>
                  <button onclick="revealText('hiddenText1')">Click to reveal text</button>
-                 <li><p id="hiddenText1" class="hidden-text"><?php echo  $_SESSION['fb_id']; ?></p></li>
+                 <li><p id="hiddenText1" class="hidden-text"><?php echo  $_SESSION['id']; ?></p></li>
 
-                 <h4>Facebook fullname</h4>
+                 <h4> fullname</h4>
 
-                 <li><?php echo $_SESSION['fb_name']; ?></li>
+                 <li><?php echo $_SESSION['name']; ?></li>
 
-                 <h4>Facebook Email</h4>
+                 <h4> Email</h4>
                  <button onclick="revealText('hiddenText2')">Click to reveal text</button>
-                 <li><p id="hiddenText2" class="hidden-text"><?php echo $_SESSION['fb_email']; ?></p></li>
+                 <li><p id="hiddenText2" class="hidden-text"><?php echo $_SESSION['email']; ?></p></li>
 
                  <h4>Your Access Code</h4>
 
-                 <textarea style="width: 1000px; height: 100px;" readonly><?php echo $_SESSION['facebook_access_code']; ?></textarea>
+                 <textarea style="width: 1000px; height: 100px;" readonly><?php echo $_SESSION['access_code']; ?></textarea>
 
                  <h4>Your Access Token</h4>
 
-                 <textarea style="width: 1000px; height: 100px;" readonly><?php echo $_SESSION['facebook_access_token']; ?></textarea>
+                 <textarea style="width: 1000px; height: 100px;" readonly><?php echo $_SESSION['access_token']; ?></textarea>
 
 
               </ul>
