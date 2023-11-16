@@ -15,7 +15,7 @@ inspired from https://salt.security/blog/oh-auth-abusing-oauth-to-take-over-mill
 5. add `"facebook/graph-sdk" : "~5.0"` on "require{}"
 6. composer install
 
-==app id & app secret==
+==Facebook app id & app secret==
 1. create a facebook developer account (https://developers.facebook.com/docs/development/register/)
 2. create an app: type->consumer, appname->bebas
 3. add product: facebook login->web
@@ -23,10 +23,18 @@ inspired from https://salt.security/blog/oh-auth-abusing-oauth-to-take-over-mill
 5. save app id and app secret, paste it to config.conf
 6. scroll down, put http://localhost:8000/ in website url
 
+==Github client id & client secret==
+1. create new oauth app (https://github.com/settings/developers)
+2. put http://localhost:8000/ in homepage url
+3. put http://localhost:8000/github-callback.php in authorization callback url
+4. save client id and client secret, paste it to config.conf
+
 ==deployment==
 1. php -S 0.0.0.0:8000, go to http://localhost:8000/ on browser
 2. log in with same facebook account used as developer account
 3. see access code and access token after redirected to profile.php 
 ```
 
-check your access token here: https://developers.facebook.com/tools/debug/accesstoken/
+
+check your access token here:
+[facebook] : https://developers.facebook.com/tools/debug/accesstoken/

@@ -10,7 +10,6 @@ session_start();
 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['fb_oauth_click'])) {
-    // Call the function when the button is clicked
     fb_oauth_process();
 }elseif($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['github_oauth_click'])){
 	github_oauth_process();
