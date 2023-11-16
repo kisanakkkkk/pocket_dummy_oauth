@@ -39,3 +39,6 @@ inspired from https://salt.security/blog/oh-auth-abusing-oauth-to-take-over-mill
 
 check your access token here:
 [facebook] : https://developers.facebook.com/tools/debug/accesstoken/
+
+DISCLAIMER
+Designed for use in a restricted local environment exclusively. Avoid deploying this on public services as the code remains highly susceptible to vulnerabilities.
