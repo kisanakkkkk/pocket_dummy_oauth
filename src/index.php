@@ -124,8 +124,6 @@ if (!isset($_SESSION['logged_in'])) {
         </button>
     </form>
 
-    <!-- Add forms for other providers as needed -->
-
 </body>
 </html>
 

@@ -12,7 +12,6 @@ $config = json_decode($configContent, true);
 $client_id = $config['google_client_id'];
 $client_secret = $config['google_client_secret'];
 $redirect_uri = $config['google_redirect_uri'];
-$simple_api_key = $config['google_api_key'];
 
 $client = new Google_Client();
 $client->setApplicationName("PHP Google OAuth Login Example");
