@@ -3,24 +3,28 @@
 //initialize facebook sdk
 //https://www.cloudways.com/blog/add-facebook-login-in-php/
 
-require 'vendor/autoload.php';
+require '../vendor/autoload.php';
 session_start();
 
 
+$configFile = 'config.conf';
+$configContent = file_get_contents($configFile);
 
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['fb_oauth_click'])) {
-    fb_oauth_process();
-}elseif($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['github_oauth_click'])){
-	github_oauth_process();
+$config = json_decode($configContent, true);
+// Decode the JSON content into an associative array
+if ($_SERVER['REQUEST_METHOD'] === 'POST'){
+	if (isset($_POST['fb_oauth_click'])) {
+	    fb_oauth_process();
+	}elseif(isset($_POST['github_oauth_click'])){
+		github_oauth_process();
+	}
+	elseif(isset($_POST['google_oauth_click'])){
+		google_oauth_process();
+	}
 }
 
 function fb_oauth_process(){
-	$configFile = 'config.conf';
-	$configContent = file_get_contents($configFile);
-
-	// Decode the JSON content into an associative array
-	$config = json_decode($configContent, true);
+	global $config;
 
 	$fb = new Facebook\Facebook([
 	 'app_id' => $config['fb_app_id'],
@@ -37,11 +41,7 @@ function fb_oauth_process(){
 }
 
 function github_oauth_process(){
-	$configFile = 'config.conf';
-	$configContent = file_get_contents($configFile);
-
-	// Decode the JSON content into an associative array
-	$config = json_decode($configContent, true);
+	global $config;
 
 	# URL of github api
 	$authorizeURL = 'https://github.com/login/oauth/authorize';
@@ -56,6 +56,31 @@ function github_oauth_process(){
 		'scope' => 'user'
 	);
 	header('Location: ' . $authorizeURL . '?' . http_build_query($github));
+
+}
+
+
+function google_oauth_process(){
+	global $config;
+
+	$client_id = $config['google_client_id'];
+	$client_secret = $config['google_client_secret'];
+	$redirect_uri = $config['google_redirect_uri'];
+	$simple_api_key = $config['google_api_key'];
+
+
+
+	$client = new Google_Client();
+	$client->setApplicationName("PHP Google OAuth Login Example");
+	$client->setClientId($client_id);
+	$client->setClientSecret($client_secret);
+	$client->setRedirectUri($redirect_uri);
+	$client->addScope("https://www.googleapis.com/auth/userinfo.email");
+	
+	// Send Client Request
+	$authUrl = $client->createAuthUrl();
+
+	header("Location: $authUrl");
 
 }
 
@@ -75,7 +100,7 @@ if (!isset($_SESSION['logged_in'])) {
     <form method="post">
         <input type="hidden" name="github_oauth_click" value="github_oauth_click">
         <button type="submit" style="background-color: #24292e; color: #ffffff; padding: 10px; border: none; cursor: pointer;">
-            Login with GitHub
+            Login with Github
         </button>
     </form>
 

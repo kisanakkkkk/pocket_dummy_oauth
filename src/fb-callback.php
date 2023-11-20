@@ -3,7 +3,7 @@
 //initialize facebook sdk
 //https://www.cloudways.com/blog/add-facebook-login-in-php/
 
-require 'vendor/autoload.php';
+require '../vendor/autoload.php';
 session_start();
 
 $configFile = 'config.conf';
